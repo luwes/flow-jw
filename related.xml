@@ -1,0 +1,19 @@
+<rss version="2.0"
+		xmlns:media="http://search.yahoo.com/mrss/"
+		xmlns:jwplayer="http://developer.longtailvideo.com/trac/wiki/FlashFormats">
+	<channel>
+		<item>
+			<title>winter brook</title>
+			<description></description>
+			<media:content url="http://content.bitsontherun.com/videos/Vg7cPUdl-jt16QglC.mp4" />
+			<media:thumbnail url="http://d3el35u4qe4frz.cloudfront.net/Vg7cPUdl-720.jpg" />
+		</item>
+		<item>
+			<title>sand beach</title>
+			<description>sand beach acadia storm waves morning</description>
+			<link>http://wessite.com/</link>
+			<media:content url="http://content.bitsontherun.com/videos/oJDUTltj-jt16QglC.mp4" />
+			<media:thumbnail url="http://d3el35u4qe4frz.cloudfront.net/oJDUTltj-720.jpg" />
+		</item>
+	</channel>
+</rss>

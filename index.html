@@ -1,0 +1,86 @@
+<!doctype html>
+
+<meta charset="utf-8">
+<title>About the JW Player 5</title>
+	
+<div id="mediaplayer">JW Player goes here</div>
+<script type="text/javascript" src="jwplayer.js"></script>
+<script type="text/javascript">
+
+	var flowPlugin;
+	
+	function jwReady() {			
+		flowPlugin = jwplayer("mediaplayer").getPlugin("flow");
+		
+		flowPlugin.onFocus(function(index) {
+			document.getElementById('focusindex').innerHTML = index;
+		});
+		
+		flowPlugin.onClick(function(index) {
+			document.getElementById('clickindex').innerHTML = index;
+		});
+		
+		flowPlugin.onHide(function() {
+			document.getElementById('status').innerHTML = 'hide';
+		});
+		
+		flowPlugin.onShow(function() {
+			document.getElementById('status').innerHTML = 'show';
+		});
+	}
+
+	jwplayer("mediaplayer").setup({
+		//autostart: true,
+		//controlbar: 'bottom',
+		//stretching: 'exactfit',
+		//repeat: 'list',
+		width: 480,
+		height: 270,
+		playlistfile: './playlist.xml',
+		plugins: {
+			'./flow-2.js':{
+				//backgroundcolor: '000000',
+				//dockicon: false,
+				controlbaricon: true,
+				coverwidth: 180,
+				coverheight: 150,
+				fixedsize: true,
+				//position: 'bottom',
+				//size: 182,
+				//onidle: 'hide',
+				//onplaying: 'hide',
+				//onpaused: 'show',
+				//oncompleted: 'hide',
+				//yposition: -15,
+				textoffset: 50
+			}
+		},
+		//debug: 'console',
+		modes: [
+			{ type: "flash", src: "./player.swf" },
+			{ type: "html5" }
+		],
+		events: {
+			onReady: jwReady
+		}
+	});
+
+</script>
+
+<div style="width:480px;">
+	<div style="float:right;">Focused: <b id="focusindex">0</b> | Clicked: <b id="clickindex">0</b></div>
+	<p>
+		<a href="javascript:;" onclick="flowPlugin.left();">Left</a> - <a href="javascript:;" onclick="flowPlugin.right();">Right</a>
+	</p>
+	<p>
+		<a href="javascript:;" onclick="flowPlugin.prev();">Previous</a> - <a href="javascript:;" onclick="flowPlugin.next();">Next</a>
+	</p>
+	<p>
+		<input id="toval" value="0" size="1"> <a href="javascript:;" onclick="flowPlugin.to(document.getElementById('toval').value);">To</a>
+	</p>
+	<hr></hr>
+	<div style="float:right;">Visibility: <b id="status"></b></div>
+	<p>
+		<a href="javascript:;" onclick="flowPlugin.hide();">Hide</a> - <a href="javascript:;" onclick="flowPlugin.show();">Show</a>
+	</p>
+</div>
