@@ -2,7 +2,7 @@
  * @author luwes / http://luwes.co
  */
 
-(function(jwplayer) {
+//(function(jwplayer) {
 
 	/**
 	* Provides requestAnimationFrame in a cross browser way.
@@ -110,9 +110,9 @@
 				div.style.background = '-webkit-gradient(linear, left top, left bottom, from('+config.gradientcolor+'), to('+config.backgroundcolor+'))';
 			}
 	
-			if (config.dockicon === true && player.getPlugin("dock")) {
-				var flow_dock_out = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAAAVdEVYdENyZWF0aW9uIFRpbWUANi8xOC8xMex3F/gAAAGLSURBVGiB7ZjxUYMwFIe/5/m/jOAI3UDcACfQDawbdARGYIOygbgBI7Qb4AS//kF6h4hykKIR89310hLyeN+9JORqklgDV7+dwKWIIqERRUIjioRGFAmNfy+y5LlmVuzVVOTac7wAw79C5xg2N8BqKhJFQiOKhEYUCY0oEhpRJDRWI+J7aLRee4lYsxgVMfscX9Lg9UvwVeyxv3ZnTS1bysIj9mrWSBQJjckiklINk3b60gVy/Raf7fcFqDu/a2Djl858fKZWbWZV59P0b5CUSTq4KlWSNu56IWnrvqeuL+n3/ZRI7hKoJOUDErfAHqiAeyABStfdAOdkM+AOSN2YR+AwNRmfqVV3Hjj04CfXbs2skbQD9m79FMCzSzwD3lybAO9mVvaDjeEjUphZNWegmdWSjrRVSVxb8rFqk1hy+y1cm7sq7IBjR76krVppZudNIyU0ETM7AA+0yb3Srousc0sO3NCuIVzbzJlWADZ2GFvwWDWJRQ6NIRJFQiOKhEYUCY3R98hfYTUVOQH3ZLQrcMqAigAAAABJRU5ErkJggg==';
-				player.getPlugin("dock").setButton('flow', showOnDockButtonClick, flow_dock_out, flow_dock_out);
+			if (config.dockicon === true && typeof player.addButton === "function") {
+				var dockIcon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAPCAYAAADgbT9oAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABV0RVh0Q3JlYXRpb24gVGltZQA2LzE4LzEx7HcX+AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAABCSURBVDiN7ZMxDgAgCAMP4/+/XAcjIQ4OBDduYeq1CyZJgFGLRrHQmbGFvVxJ18kawLfFLW5xix/El7brZvDst8ULHQsIIS+DTYcAAAAASUVORK5CYII=";
+				player.addButton(dockIcon, 'Show Playlist', showOnDockButtonClick, 'flow');
 			}
 						
 			player.onPlaylist(playlistHandler);
@@ -416,8 +416,6 @@
 		}
 		
 		function stateHandler(data) {
-		
-			document.getElementById(player.id + "_displayarea").style.display = "block";
 		
 			switch (player.getState()) {
 				case 'PAUSED':
@@ -1072,6 +1070,6 @@
 		}
 	};
 	
-	jwplayer().registerPlugin('flow-2', main, './flow-2.swf');
+	jwplayer().registerPlugin('flow', '6.0', main, './flow-2.swf');
 	
-})(jwplayer);
+//})(jwplayer);

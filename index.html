@@ -9,8 +9,9 @@
 
 	var flowPlugin;
 	
-	function jwReady() {			
-		flowPlugin = jwplayer("mediaplayer").getPlugin("flow");
+	function jwReady() {
+
+		flowPlugin = jwplayer("mediaplayer").plugins['flow'];
 		
 		flowPlugin.onFocus(function(index) {
 			document.getElementById('focusindex').innerHTML = index;
@@ -30,18 +31,18 @@
 	}
 
 	jwplayer("mediaplayer").setup({
+		//debug: 'console',
 		//autostart: true,
 		//controlbar: 'bottom',
 		//stretching: 'exactfit',
 		//repeat: 'list',
+		//primary: 'flash',
 		width: 480,
 		height: 270,
-		playlistfile: './playlist.xml',
+		playlist: './playlist.xml',
 		plugins: {
-			'./flow-2.js':{
-				//backgroundcolor: '000000',
+			'./flow-2.js': {
 				//dockicon: false,
-				controlbaricon: true,
 				coverwidth: 180,
 				coverheight: 150,
 				fixedsize: true,
@@ -49,21 +50,15 @@
 				//size: 182,
 				//onidle: 'hide',
 				//onplaying: 'hide',
-				//onpaused: 'show',
+				onpaused: 'show',
 				//oncompleted: 'hide',
 				//yposition: -15,
 				textoffset: 50
 			}
-		},
-		//debug: 'console',
-		modes: [
-			{ type: "flash", src: "./player.swf" },
-			{ type: "html5" }
-		],
-		events: {
-			onReady: jwReady
 		}
 	});
+
+	jwplayer("mediaplayer").onReady(jwReady);
 
 </script>
 

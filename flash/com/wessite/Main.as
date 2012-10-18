@@ -14,7 +14,9 @@
 
 * Flow 2.0 by Wesley Luyten. June 08, 2011
 * Flow 2.1 by Wesley Luyten. February 10, 2012
+* Flow 2.2 by Wesley Luyten. October 18, 2012
 
+	-make compatible with jw6
 *
 * Copyright (c) 2012 Wesley Luyten
 **/
@@ -45,11 +47,8 @@ package com.wessite {
 	import com.wessite.flow.*;
 
 	
-	public class Main extends Sprite implements IPlugin {
+	public class Main extends Sprite implements IPlugin6 {
 
-
-		[Embed(source="../../images/flow-controlbar.png")]
-		private var FlowBarIcon:Class;
 
 		[Embed(source="../../images/flow-dock.png")]
 		private var FlowDockIcon:Class;
@@ -83,7 +82,6 @@ package com.wessite {
 			tweentime: 				0.8,
 			framerate: 				60,
 			rotatedelay: 			0,
-			controlbaricon: 		false,
 			dockicon:		 		true,
 			onidle:					'show',
 			onpaused:				'hide',
@@ -146,13 +144,9 @@ package com.wessite {
 			this.parent.addChild(masker);
 			this.mask = masker;
 
-			if (config.controlbaricon == true && player.controls.controlbar) {
-				controlIcon = new FlowBarIcon();
-				player.controls.controlbar.addButton(controlIcon, 'Flow', toggleOnControlbarButtonClick);
-			}
 			if (config.dockicon == true && player.controls.dock) {
 				dockIcon = new FlowDockIcon();
-				player.controls.dock.addButton(dockIcon, 'Flow', showOnDockButtonClick);
+				player.controls.dock.addButton(dockIcon, 'Show Playlist', showOnDockButtonClick);
 			}
 
 			player.addEventListener(PlaylistEvent.JWPLAYER_PLAYLIST_LOADED, playlistHandler);
@@ -511,6 +505,10 @@ package com.wessite {
 		public function get id():String {
 		   return "flow";
 		}
+
+		public function get target():String {
+        	return "6.0";
+    	}
 		
 		public function resize(wid:Number, hei:Number):void {
 			
