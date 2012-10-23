@@ -35,6 +35,8 @@
 		this.height = 0;
 		
 		var slideSize = 0;
+
+		var resizeDelay = true;
 		var playerResized = false;
 		
 		var focusCallbacks = [];
@@ -220,7 +222,7 @@
 		
 		function tweenResize() {
 			playerResized = false;
-			player.resize();
+			_this.resize();
 		}
 		
 		function hideInternal() {
@@ -243,7 +245,7 @@
 				showVideoElement();
 			}
 			
-			for (var i=0; i<hideCallbacks.length; i++) {
+			for (var i = 0; i < hideCallbacks.length; i++) {
 				hideCallbacks[i]();
 			}
 		}
@@ -264,7 +266,8 @@
 			setVisible(true);
 			
 			if (isPositioned()) {
-				config.size = 1; tweenResize();
+				config.size = 1;
+				tweenResize();
 				new TWEEN.Tween(config).to({ size: slideSize }, 400)
 					.easing(TWEEN.Easing.Cubic.EaseOut)
 					.onUpdate(tweenResize).onComplete(showComplete)
@@ -273,7 +276,7 @@
 				setTimeout(function() { div.style.opacity = 1; }, 100);
 			}
 			
-			for (var i=0; i<showCallbacks.length; i++) {
+			for (var i = 0; i < showCallbacks.length; i++) {
 				showCallbacks[i]();
 			}
 		}
@@ -537,9 +540,24 @@
 		this.getDisplayElement = function() {
 			return div;
 		};
+
+		function playerResize(wid, hei) {
+			if (!playerResized) {
+				playerResized = true;
+				//jw6 requires a delay at page load for the player to resize correctly
+				if (resizeDelay) {
+					resizeDelay = false;
+					setTimeout(function() {
+						player.resize(wid, hei);
+					}, 0);
+				} else {
+					player.resize(wid, hei);
+				}
+			}
+		}
 		
 		this.resize = function(wid, hei) {
-		
+
 			if (player.getRenderingMode() == "html5") {
 			
 				if (wid) _this.width = wid;
@@ -552,18 +570,12 @@
 					if (config.position == 'left' || config.position == 'right') {
 						flowWidth = config.size;
 						flowHeight = player.config.height;
-						if (!playerResized) {
-							playerResized = true;
-							player.resize(player.config.width-flowWidth, player.config.height);
-						}
+						playerResize(player.config.width-flowWidth, player.config.height);
 						div.style[config.position] = -config.size + 'px';
 					} else if (config.position == 'top' || config.position == 'bottom') {
 						flowWidth = player.config.width;
 						flowHeight = config.size;
-						if (!playerResized) {
-							playerResized = true;
-							player.resize(player.config.width, player.config.height-flowHeight);
-						}
+						playerResize(player.config.width, player.config.height-flowHeight);
 						if (config.position == 'top') {
 							div.style.top = -flowHeight + 'px';
 						} else if (config.position == 'bottom') {

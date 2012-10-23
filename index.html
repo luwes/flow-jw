@@ -38,22 +38,21 @@
 		//repeat: 'list',
 		//primary: 'flash',
 		width: 480,
-		height: 270,
+		height: 450,
 		playlist: './playlist.xml',
 		plugins: {
 			'./flow-2.js': {
 				//dockicon: false,
-				coverwidth: 180,
-				coverheight: 150,
+				coverwidth: 150,
+				coverheight: 100,
 				fixedsize: true,
-				//position: 'bottom',
-				//size: 182,
-				//onidle: 'hide',
-				//onplaying: 'hide',
+				position: 'bottom',
+				size: 170,
+				onplaying: 'show',
 				onpaused: 'show',
 				//oncompleted: 'hide',
-				//yposition: -15,
-				textoffset: 50
+				yposition: -15,
+				textoffset: 45
 			}
 		}
 	});
@@ -63,8 +62,8 @@
 </script>
 
 <div style="width:480px;">
-	<div style="float:right;">Focused: <b id="focusindex">0</b> | Clicked: <b id="clickindex">0</b></div>
-	<p>
+	<p style="float:right;">Focused: <b id="focusindex">0</b> | Clicked: <b id="clickindex">0</b></p>
+	<p style="margin-top:0; padding-top:1em;">
 		<a href="javascript:;" onclick="flowPlugin.left();">Left</a> - <a href="javascript:;" onclick="flowPlugin.right();">Right</a>
 	</p>
 	<p>
