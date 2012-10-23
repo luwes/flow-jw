@@ -9,8 +9,9 @@
 
 	var flowPlugin;
 	
-	function jwReady() {			
-		flowPlugin = jwplayer("mediaplayer").getPlugin("flow");
+	function jwReady() {
+
+		flowPlugin = jwplayer("mediaplayer").plugins['flow'];
 		
 		flowPlugin.onFocus(function(index) {
 			document.getElementById('focusindex').innerHTML = index;
@@ -30,46 +31,39 @@
 	}
 
 	jwplayer("mediaplayer").setup({
+		//debug: 'console',
 		//autostart: true,
 		//controlbar: 'bottom',
 		//stretching: 'exactfit',
 		//repeat: 'list',
+		//primary: 'flash',
 		width: 480,
-		height: 270,
-		playlistfile: './playlist.xml',
+		height: 450,
+		playlist: './playlist.xml',
 		plugins: {
-			'./flow-2.js':{
-				//backgroundcolor: '000000',
+			'./flow-2.js': {
 				//dockicon: false,
-				controlbaricon: true,
-				coverwidth: 180,
-				coverheight: 150,
+				coverwidth: 150,
+				coverheight: 100,
 				fixedsize: true,
-				//position: 'bottom',
-				//size: 182,
-				//onidle: 'hide',
-				//onplaying: 'hide',
-				//onpaused: 'show',
+				position: 'bottom',
+				size: 170,
+				onplaying: 'show',
+				onpaused: 'show',
 				//oncompleted: 'hide',
-				//yposition: -15,
-				textoffset: 50
+				yposition: -15,
+				textoffset: 45
 			}
-		},
-		//debug: 'console',
-		modes: [
-			{ type: "flash", src: "./player.swf" },
-			{ type: "html5" }
-		],
-		events: {
-			onReady: jwReady
 		}
 	});
+
+	jwplayer("mediaplayer").onReady(jwReady);
 
 </script>
 
 <div style="width:480px;">
-	<div style="float:right;">Focused: <b id="focusindex">0</b> | Clicked: <b id="clickindex">0</b></div>
-	<p>
+	<p style="float:right;">Focused: <b id="focusindex">0</b> | Clicked: <b id="clickindex">0</b></p>
+	<p style="margin-top:0; padding-top:1em;">
 		<a href="javascript:;" onclick="flowPlugin.left();">Left</a> - <a href="javascript:;" onclick="flowPlugin.right();">Right</a>
 	</p>
 	<p>
