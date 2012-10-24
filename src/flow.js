@@ -1083,6 +1083,6 @@
 		}
 	};
 	
-	jwplayer().registerPlugin('flow', '6.0', main, './flow-2.swf');
+	jwplayer().registerPlugin('flow', '6.0', main, './flow.swf');
 	
 })(jwplayer);
