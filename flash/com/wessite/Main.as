@@ -14,7 +14,7 @@
 
 * Flow 2.0 by Wesley Luyten. June 08, 2011
 * Flow 2.1 by Wesley Luyten. February 10, 2012
-* Flow 2.2 by Wesley Luyten. October 18, 2012
+* Flow 3.0 by Wesley Luyten. October 18, 2012
 
 	-make compatible with jw6
 *

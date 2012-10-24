@@ -4,6 +4,6 @@ cd $(dirname $0)
 
 echo "Compiling..."
 uglifyjs2 src/Tween.js \
-          src/flow-2.js \
-          -o flow-2.js -m
+          src/flow.js \
+          -o flow.js -m
 	

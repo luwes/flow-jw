@@ -1,8 +1,9 @@
 /** @license
  * @author luwes / http://luwes.co
+ * @version 3.0
  */
 
-//(function(jwplayer) {
+(function(jwplayer) {
 
 	/**
 	* Provides requestAnimationFrame in a cross browser way.
@@ -1084,4 +1085,4 @@
 	
 	jwplayer().registerPlugin('flow', '6.0', main, './flow-2.swf');
 	
-//})(jwplayer);
+})(jwplayer);

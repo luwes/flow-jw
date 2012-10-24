@@ -10,7 +10,7 @@ JWPATH=/Developer/SDKs/jw6-plugin-sdk
 echo "Compiling..."
 $FLEXPATH/bin/mxmlc ./com/wessite/Main.as \
 	-sp ./ \
-	-o ../flow-2.swf \
+	-o ../flow.swf \
 	-library-path+=$JWPATH/lib \
 	-load-externs $JWPATH/lib/jwplayer-6-classes.xml \
 	-use-network=false \
