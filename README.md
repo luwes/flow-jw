@@ -4,6 +4,5 @@ The Flow plugin provides slick, 3D animation playlist effects for users to flip 
 
 Since version 2, the Flow plugin even works on iPhone and iPad in HTML5 mode.
 
-Version *2.1* for JW Player 5: http://luwes.co/flow-jw/2.1/flow.js
-
-Version *3.0* for JW Player 6: http://luwes.co/flow-jw/3.0/flow.js
+* Version 2.1 for JW Player 5: http://luwes.co/flow-jw/2.1/flow.js
+* Version 3.0 for JW Player 6: http://luwes.co/flow-jw/3.0/flow.js
