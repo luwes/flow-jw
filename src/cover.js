@@ -137,4 +137,4 @@
 		ctx.fillRect(0, 0, wid, hei);
 	};
 
-})(window);
+})(window.flow);

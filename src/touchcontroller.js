@@ -56,4 +56,4 @@
 		e.preventDefault();
 	};
 
-})(window);
+})(window.flow);

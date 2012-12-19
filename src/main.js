@@ -3,7 +3,10 @@
  * @version 3.0
  */
 
-(function(jwplayer) {
+(function(jwplayer, C) {
+
+	C.flow = {};	//flow namespace
+	C = C.flow;		//reset C(Class)
 
 	/**
 	* Provides requestAnimationFrame in a cross browser way.
@@ -31,8 +34,8 @@
 		}
 	}
 	
-	var main = function(player, config, div) {
-				
+	C.Flow = function(player, config, div) {
+
 		var _this = this;
 		var playlist;
 		
@@ -193,7 +196,7 @@
 				}
 			}
 			
-			for (var i=0; i<focusCallbacks.length; i++) {
+			for (var i = 0; i < focusCallbacks.length; i++) {
 				focusCallbacks[i](index);
 			}
 		}
@@ -213,7 +216,7 @@
 				}
 			}
 			
-			for (var i=0; i<clickCallbacks.length; i++) {
+			for (var i = 0; i < clickCallbacks.length; i++) {
 				clickCallbacks[i](index);
 			}
 		}
@@ -329,7 +332,7 @@
 				}
 				
 				if (coverflow) coverflow.destroy();
-				coverflow = new CoverFlow(div, datalist, config.coverwidth, config.coverheight, config.covergap, config.coverangle, config.coverdepth, config.coveroffset,
+				coverflow = new C.CoverFlow(div, datalist, config.coverwidth, config.coverheight, config.covergap, config.coverangle, config.coverdepth, config.coveroffset,
 								config.opacitydecrease, config.backgroundcolor, config.reflectionopacity, config.reflectionratio, config.reflectionoffset,
 								config.removeblackborder, config.fixedsize, config.tweentime, config.focallength);
 				div.appendChild(coverflow.domElement);
@@ -352,7 +355,7 @@
 		
 			datalist = [];
 	
-			for (var i=0; i<itemList.length; i++) {
+			for (var i = 0; i < itemList.length; i++) {
 				var itm = itemList[i];
 				datalist[i] = {title: itm.title, description: itm.description, link: itm.link, file: itm.file};
 				datalist[i].image = itm.image;
@@ -362,7 +365,7 @@
 			}
 			
 			if (coverflow) coverflow.destroy();
-			coverflow = new CoverFlow(div, datalist, config.coverwidth, config.coverheight, config.covergap, config.coverangle, config.coverdepth, config.coveroffset,
+			coverflow = new C.CoverFlow(div, datalist, config.coverwidth, config.coverheight, config.covergap, config.coverangle, config.coverdepth, config.coveroffset,
 							config.opacitydecrease, config.backgroundcolor, config.reflectionopacity, config.reflectionratio, config.reflectionoffset,
 							config.removeblackborder, config.fixedsize, config.tweentime, config.focallength);
 			div.appendChild(coverflow.domElement);
@@ -622,6 +625,6 @@
 		animate();
 	};
 	
-	jwplayer().registerPlugin('flow', '6.0', main, './flow.swf');
+	jwplayer().registerPlugin('flow', '6.0', C.Flow, './flow.swf');
 	
-})(jwplayer);
+})(jwplayer, window);

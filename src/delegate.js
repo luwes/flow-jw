@@ -90,4 +90,4 @@
 		}
 	};
 
-})(window);
+})(window.flow);

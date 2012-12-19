@@ -33,7 +33,7 @@
 		}
 	};
 	
-})(window);
+})(window.flow);
 
 
 if (!Array.indexOf) {

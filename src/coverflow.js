@@ -38,13 +38,13 @@
 		
 		this.domElement.style.webkitPerspective = focalLength;
 		
-		var delegate = new Delegate(this, tray);
-		var controller = new TouchController(this, delegate, tray);
+		var delegate = new C.Delegate(this, tray);
+		var controller = new C.TouchController(this, delegate, tray);
 		var cover = null;
 
-		for (var i=0; i<playlist.length; i++) {
+		for (var i = 0; i < playlist.length; i++) {
 			
-			cover = new Cover(this, i, playlist[i].image, playlist[i].duration, wid, hei, reflectOpacity,
+			cover = new C.Cover(this, i, playlist[i].image, playlist[i].duration, wid, hei, reflectOpacity,
 									reflectRatio, reflectOffset, backColor, removeBlackBorder, fixedSize);
 
 			delegate.cells.push(cover);
@@ -172,5 +172,5 @@
 		}
 	};
 
-})(window);
+})(window.flow);
 
