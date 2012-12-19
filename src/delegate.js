@@ -80,13 +80,6 @@ Delegate.prototype.update = function(currentX) {
 	var f = this.getFocusedCellOne(currentX);
 	if (f != this.prevF) {
 		this.flow.focused(f);
-		for (var i=0; i<this.cells.length; i++) {
-			if (i < f) {
-				this.cells[i].domElement.style.zIndex = i;
-			} else {
-				this.cells[i].domElement.style.zIndex = this.cells.length-i+f-1;
-			}
-		}
 		this.prevF = f;
 	}
 	
