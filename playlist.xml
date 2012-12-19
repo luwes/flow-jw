@@ -5,40 +5,45 @@
  		<item>
 			<title>snow-motion</title>
 			<description>what a massive and unbelievable winter we're having!</description>
-			<media:content url="http://content.bitsontherun.com/videos/eawtAP1q-jt16QglC.mp4" />
-			<!-- http://d3el35u4qe4frz.cloudfront.net/eawtAP1q-720.jpg -->
-			<media:thumbnail url="http://d3el35u4qe4frz.cloudfront.net/eawtAP1q-720.jpg" />
+			<media:content url="http://content.bitsontherun.com/videos/eawtAP1q-jt16QglC.mp4" type="video/mp4" />
+			<media:content url="http://content.bitsontherun.com/videos/eawtAP1q-vxKVlGiW.webm" type="video/webm" />
+			<media:thumbnail url="http://d3el35u4qe4frz.cloudfront.net/eawtAP1q-480.jpg" />
 		</item>
 		<item>
 			<title>snowy neighborhood</title>
 			<description></description>
-			<media:content url="http://content.bitsontherun.com/videos/HVClJdSh-jt16QglC.mp4" />
-			<media:thumbnail url="http://d3el35u4qe4frz.cloudfront.net/HVClJdSh-720.jpg" />
+			<media:content url="http://content.bitsontherun.com/videos/HVClJdSh-jt16QglC.mp4" type="video/mp4" />
+			<media:content url="http://content.bitsontherun.com/videos/HVClJdSh-vxKVlGiW.webm" type="video/webm" />
+			<media:thumbnail url="http://d3el35u4qe4frz.cloudfront.net/HVClJdSh-480.jpg" />
 			<jwplayer:ova.hidden>true</jwplayer:ova.hidden>
-		</item>
-		<item>
-			<title>winter brook</title>
-			<description></description>
-			<media:content url="http://content.bitsontherun.com/videos/Vg7cPUdl-jt16QglC.mp4" />
-			<media:thumbnail url="http://d3el35u4qe4frz.cloudfront.net/Vg7cPUdl-720.jpg" />
 		</item>
 		<item>
 			<title>sand beach</title>
 			<description>sand beach acadia storm waves morning</description>
-			<media:content url="http://content.bitsontherun.com/videos/oJDUTltj-jt16QglC.mp4" />
-			<media:thumbnail url="http://d3el35u4qe4frz.cloudfront.net/oJDUTltj-720.jpg" />
+			<media:content url="http://content.bitsontherun.com/videos/oJDUTltj-jt16QglC.mp4" type="video/mp4" />
+			<media:content url="http://content.bitsontherun.com/videos/oJDUTltj-vxKVlGiW.webm" type="video/webm" />
+			<media:thumbnail url="http://d3el35u4qe4frz.cloudfront.net/oJDUTltj-480.jpg" />
 		</item>
 		<item>
 			<title>wacking streams</title>
 			<description></description>
-			<media:content url="http://content.bitsontherun.com/videos/QieeAOba-jt16QglC.mp4" />
-			<media:thumbnail url="http://d3el35u4qe4frz.cloudfront.net/QieeAOba-720.jpg" />
+			<media:content url="http://content.bitsontherun.com/videos/QieeAOba-jt16QglC.mp4" type="video/mp4" />
+			<media:content url="http://content.bitsontherun.com/videos/QieeAOba-vxKVlGiW.webm" type="video/webm" />
+			<media:thumbnail url="http://d3el35u4qe4frz.cloudfront.net/QieeAOba-480.jpg" />
 		</item>
 		<item>
 			<title>driving rain</title>
 			<description></description>
-			<media:content url="http://content.bitsontherun.com/videos/njZMLMwy-jt16QglC.mp4" />
-			<media:thumbnail url="http://d3el35u4qe4frz.cloudfront.net/njZMLMwy-720.jpg" />
+			<media:content url="http://content.bitsontherun.com/videos/njZMLMwy-jt16QglC.mp4" type="video/mp4" />
+			<media:content url="http://content.bitsontherun.com/videos/njZMLMwy-vxKVlGiW.webm" type="video/webm" />
+			<media:thumbnail url="http://d3el35u4qe4frz.cloudfront.net/njZMLMwy-480.jpg" />
+		</item>
+		<item>
+			<title>winter brook</title>
+			<description></description>
+			<media:content url="http://content.bitsontherun.com/videos/Vg7cPUdl-jt16QglC.mp4" type="video/mp4" />
+			<media:content url="http://content.bitsontherun.com/videos/Vg7cPUdl-vxKVlGiW.webm" type="video/webm" />
+			<media:thumbnail url="http://d3el35u4qe4frz.cloudfront.net/Vg7cPUdl-480.jpg" />
 		</item>
 	</channel>
 </rss>
