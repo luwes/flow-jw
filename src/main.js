@@ -21,6 +21,15 @@
 			};
 		})();
 	}
+
+	var scripts = document.getElementsByTagName("head")[0].getElementsByTagName('script');
+	for (var i = 0; i < scripts.length; i++) {
+		var match = scripts[i].src.match(/(.*?)flow-?\d?\.js/);
+		if (match) {
+			var mydir = match[1];
+			break;
+		}
+	}
 	
 	var main = function(player, config, div) {
 				
@@ -95,10 +104,8 @@
 
 			var head = document.getElementsByTagName('head')[0];
 			var element = document.createElement('style');
-			var rules = config.textstyle;
-			element.setAttribute("type", "text/css");
 			element.appendChild(document.createTextNode(css));
-			element.appendChild(document.createTextNode(rules));
+			element.appendChild(document.createTextNode(config.textstyle));
 			head.appendChild(element);
 			
 			div.className += "jwplayer_flow";
