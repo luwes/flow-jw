@@ -90,7 +90,11 @@
 			xposition:				0,
 			yposition:				0
 		};
-	
+
+		C.Utils.addClass(div, 'jwplayer_flow');
+		C.Utils.inject(mydir + "flow.css");
+
+
 		function setup(e) {
 			if (player.getRenderingMode() != "html5") return;
 		
@@ -98,11 +102,7 @@
 				if (config[prp] === undefined) config[prp] = defaultConfig[prp];
 			}
 
-			C.Utils.inject(mydir + "flow.css");
 			C.Utils.inject(config.textstyle);
-			
-			C.Utils.addClass(div, 'jwplayer_flow');
-			div.addEventListener(C.Utils.getTransEndEventName(), divTransitionEnd);
 	
 			slideSize = config.size;
 			
@@ -124,6 +124,8 @@
 			player.onBuffer(stateHandler);
 			player.onPause(stateHandler);
 			player.onComplete(completeHandler);
+
+			div.addEventListener(C.Utils.getTransEndEventName(), divTransitionEnd);
 			
 			div.addEventListener('mousewheel', scrollOnMousewheel);
 			div.addEventListener('DOMMouseScroll', scrollOnMousewheel);
