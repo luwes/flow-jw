@@ -29,14 +29,12 @@
 		
 		
 		this.domElement = document.createElement('div');
-		this.domElement.setAttribute('id', 'flow_wrap');
-		this.domElement.setAttribute('class', 'flow_wrap');
+		this.domElement.className = "flow_wrap";
 		var tray = document.createElement('div');
-		tray.setAttribute('id', 'flow_tray');
-		tray.setAttribute('class', 'flow_tray');
+		tray.className = "flow_tray";
 		this.domElement.appendChild(tray);
 		
-		this.domElement.style.webkitPerspective = focalLength;
+		this.domElement.style[Modernizr.prefixed('perspective')] = focalLength+"px";
 		
 		var delegate = new C.Delegate(this, tray);
 		var controller = new C.TouchController(this, delegate, tray);
@@ -50,12 +48,13 @@
 			delegate.cells.push(cover);
 			tray.appendChild(cover.domElement);
 			cover.domElement.onmousedown = clickHandler;
-			cover.domElement.style.webkitTransitionDuration = duration + "s";
+			cover.domElement.style[Modernizr.prefixed('transitionDuration')] = duration + "s";
 			covers[i] = cover;
 		}
 		//cover holds the last cover added
-		cover.domElement.firstChild.addEventListener('webkitTransitionEnd', coverTransitionEnd, true);
+		cover.domElement.firstChild.addEventListener(C.Utils.getTransEndEventName(), coverTransitionEnd, true);
 		
+
 		function coverTransitionEnd(e) {
 			e.stopPropagation();
 
@@ -69,8 +68,7 @@
 		
 		this.hide = function(callback) {
 			_this.hideComplete = callback;
-
-			for (var i=0; i<covers.length; i++) {
+			for (var i = 0; i < covers.length; i++) {
 				covers[i].domElement.firstChild.style.opacity = 0;
 			}
 		};
@@ -78,7 +76,7 @@
 		this.show = function(callback) {
 			_this.showComplete = callback;
 			_this.domElement.style.opacity = 1;
-			for (var i=0; i<covers.length; i++) {
+			for (var i = 0; i < covers.length; i++) {
 				covers[i].domElement.firstChild.style.opacity = 1;
 			}
 		};
@@ -121,13 +119,13 @@
 		};
 		
 		this.focused = function(index) {
-			for (var i=0; i<focusCallbacks.length; i++) {
+			for (var i = 0; i < focusCallbacks.length; i++) {
 				focusCallbacks[i](index);
 			}
 		};
 		
 		this.clicked = function(index) {
-			for (var i=0; i<clickCallbacks.length; i++) {
+			for (var i = 0; i < clickCallbacks.length; i++) {
 				clickCallbacks[i](index);
 			}
 		};
@@ -148,14 +146,18 @@
 		};
 		
 		function clickHandler(e) {
-			var i = 0, child = e.currentTarget;
+			var child = this;
+			var i = 0;
+
 			while ((child = child.previousSibling) !== null) ++i;
-			var flowItem = covers[i];
-			if (e.offsetY < flowItem.halfHeight) {
+
+			var cover = covers[i];
+			var y = e.offsetY || e.layerY;
+			if (y < cover.halfHeight) {
 				e.preventDefault();
 
-				if (flowItem.index != current) _this.to(flowItem.index);
-				else _this.clicked(flowItem.index);
+				if (cover.index != current) _this.to(cover.index);
+				else _this.clicked(cover.index);
 			}
 		}
 

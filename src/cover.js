@@ -11,16 +11,16 @@
 		this.index = index;
 		this.halfHeight = 0;
 		
-		this.domElement = document.createElement("div");
+		this.domElement = document.createElement('div');
 		this.domElement.className = "flow_cell";
 		var cellStyle = this.domElement.style;
 		cellStyle.backgroundColor = backColor;
 		
-		var bitmap = document.createElement("canvas");
+		var bitmap = document.createElement('canvas');
 		this.domElement.appendChild(bitmap);
 
-		var image = document.createElement("img");
-		image.addEventListener("load", onComplete);
+		var image = document.createElement('img');
+		image.addEventListener('load', onComplete);
 		image.src = url;
 		
 		function onComplete() {
@@ -35,7 +35,7 @@
 			// algorithm to remove top and bottom black border of thumbnail
 			if (removeBlackBorder) {
 			
-				var b = document.createElement("canvas");
+				var b = document.createElement('canvas');
 				b.width = wid;
 				b.height = hei;
 				var ctx = b.getContext('2d');

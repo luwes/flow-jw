@@ -8,6 +8,7 @@
 		this.transforms = [];
 		
 		this.prevF = -1;
+		this.transformProp = Modernizr.prefixed('transform');
 	};
 
 	C.Delegate.prototype.updateTouchEnd = function(controller) {
@@ -54,7 +55,7 @@
 
 	C.Delegate.prototype.setStyleForCell = function(cell, i, transform) {
 		if (this.transforms[i] != transform) {
-			cell.domElement.style.webkitTransform = transform;
+			cell.domElement.style[this.transformProp] = transform;
 			this.transforms[i] = transform;
 		}
 	};
@@ -75,7 +76,7 @@
 	};
 
 	C.Delegate.prototype.update = function(currentX) {
-		this.elem.style.webkitTransform = "translate3d(" + (currentX) + "px, 0, 0)";
+		this.elem.style[this.transformProp] = "translate3d(" + (currentX) + "px, 0, 0)";
 		/*
 			It would be nice if we only updated dirty cells... for now, we use a cache
 		*/
@@ -86,6 +87,7 @@
 		}
 		
 		for (var j = 0; j < this.cells.length; j++) {
+			
 			this.setStyleForCell(this.cells[j], j, this.transformForCell(f, j, currentX));
 		}
 	};

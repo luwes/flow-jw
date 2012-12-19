@@ -43,6 +43,7 @@
 		var datalist, indexMap;
 		var animating = false;
 		var rotateInterval;
+		var transformProp = Modernizr.prefixed('transform');
 		
 		this.width = 0;
 		this.height = 0;
@@ -101,7 +102,7 @@
 			C.Utils.inject(config.textstyle);
 			
 			C.Utils.addClass(div, 'jwplayer_flow');
-			div.addEventListener('webkitTransitionEnd', divTransitionEnd);
+			div.addEventListener(C.Utils.getTransEndEventName(), divTransitionEnd);
 	
 			slideSize = config.size;
 			
@@ -125,19 +126,21 @@
 			player.onComplete(completeHandler);
 			
 			div.addEventListener('mousewheel', scrollOnMousewheel);
+			div.addEventListener('DOMMouseScroll', scrollOnMousewheel);
 		}
 		
 		function scrollOnMousewheel(e) {
 			e.preventDefault();
 			
-			var delta = Math.ceil(Math.abs(e.wheelDelta) / 120);
-			if (delta > 0) {
-				var sign = Math.abs(e.wheelDelta) / e.wheelDelta;
+			var delta = e.detail ? e.detail * (-120) : e.wheelDelta;
+			var count = Math.ceil(Math.abs(delta) / 120);
+			if (count > 0) {
+				var sign = Math.abs(delta) / delta;
 				var func = null;
 				if (sign > 0) func = _this.left;
 				else if (sign < 0) func = _this.right;
 				if (typeof func === "function") {
-					for (var i=0; i<delta; i++) func();
+					for (var i = 0; i < count; i++) func();
 				}
 			}
 		}
@@ -156,19 +159,19 @@
 		
 		function hideVideoElement() {
 			if (getVideoElement()) {
-				var t = getVideoElement().style.webkitTransform;
+				var t = getVideoElement().style[transformProp];
 				if (t) {
-					getVideoElement().style.webkitTransform = t.replace(/translate\(.+?\)/, 'translate(-'+_this.width+'px,-'+_this.height+'px)');
+					getVideoElement().style[transformProp] = t.replace(/translate\(.+?\)/, 'translate(-'+_this.width+'px,-'+_this.height+'px)');
 				} else {
-					getVideoElement().style.webkitTransform = 'translate(-'+_this.width+'px,-'+_this.height+'px)';
+					getVideoElement().style[transformProp] = 'translate(-'+_this.width+'px,-'+_this.height+'px)';
 				}
 			}
 		}
 		
 		function showVideoElement() {
 			if (getVideoElement()) {
-				var t = getVideoElement().style.webkitTransform;
-				getVideoElement().style.webkitTransform = t.replace(/translate\(.+?\)/, 'translate(0px,0px)');
+				var t = getVideoElement().style[transformProp];
+				getVideoElement().style[transformProp] = t.replace(/translate\(.+?\)/, 'translate(0px,0px)');
 			}
 		}
 		

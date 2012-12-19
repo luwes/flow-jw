@@ -55,6 +55,17 @@
 
 		head.appendChild(element);
 	};
+
+	C.Utils.getTransEndEventName = function() {
+		return {
+			'WebkitTransition' : 'webkitTransitionEnd',
+			'MozTransition'    : 'transitionend',
+			'OTransition'      : 'oTransitionEnd',
+			'msTransition'     : 'msTransitionEnd', // maybe?
+			'transition'       : 'transitionend'
+		}
+		[ Modernizr.prefixed('transition') ];
+	};
 	
 })(window.flow);
 
