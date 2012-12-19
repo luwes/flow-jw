@@ -1,8 +1,8 @@
 /**
-* Copyright (c) 2011 Wesley Luyten
+* Copyright (c) 2013 Wesley Luyten
 **/
 
-package com.wessite.flow {
+package flow {
 	
 	// strong typed references are much faster than weak references
 	public class TypedObject {

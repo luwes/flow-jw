@@ -14,7 +14,7 @@
  * Works with IE/Firefox/Opera/Chrome on Windows.
  * Safari and any Mac OS versions of browsers are not supported :(
  */
-package com.wessite {
+package flow {
 	
 	import flash.display.Loader;
 	import flash.errors.IllegalOperationError;

@@ -18,10 +18,10 @@
 
 	-make compatible with jw6
 *
-* Copyright (c) 2012 Wesley Luyten
+* Copyright (c) 2013 Wesley Luyten
 **/
 
-package com.wessite {
+package flow {
 
 	import flash.display.*;
 	import flash.events.*;
@@ -44,16 +44,13 @@ package com.wessite {
 	import aze.motion.easing.*;
 	import net.hires.debug.Stats;
 	
-	import com.wessite.flow.*;
-
-	
 	public class Main extends Sprite implements IPlugin6 {
 
 
-		[Embed(source="../../images/flow-dock.png")]
+		[Embed(source="../images/flow-dock.png")]
 		private var FlowDockIcon:Class;
 
-		[Embed(source='../../fonts/Arial Rounded Bold.ttf', fontName='Arial Rounded MT Bold', fontFamily='Arial Rounded MT Bold', fontWeight='normal', mimeType='application/x-font')]
+		[Embed(source='../fonts/Arial Rounded Bold.ttf', fontName='Arial Rounded MT Bold', fontFamily='Arial Rounded MT Bold', fontWeight='normal', mimeType='application/x-font')]
 		private static var EmbedArialRoundedMTBold:Class;
 		Font.registerFont(EmbedArialRoundedMTBold);
 		
@@ -96,7 +93,7 @@ package com.wessite {
 		public var playlist:IPlaylist;
 		private var config:PluginConfig;
 		
-		private var flow:Flow;
+		private var coverflow:CoverFlow;
 		private var masker:Sprite;
 		private var datalist:Array;
 		private var indexMap:Array;
@@ -214,7 +211,7 @@ package com.wessite {
 				if (config.showtext == true) {
 					new EazeTween(textField).to(0.7, { alpha:0 });
 				}
-				flow.hide(hideBack);
+				coverflow.hide(hideBack);
 			}
 			
 			for (var i:int=0; i<hideCallbacks.length; i++) {
@@ -265,7 +262,7 @@ package com.wessite {
 			if (config.showtext == true) {
 				new EazeTween(textField).to(0.7, { alpha:1 });
 			}
-			flow.show(showComplete);
+			coverflow.show(showComplete);
 		}
 		
 		private function showComplete():void {
@@ -340,11 +337,11 @@ package com.wessite {
 					}
 				}
 				
-				if (flow) flow.destroy();
-				flow = new Flow(datalist, config.coverwidth, config.coverheight, config.covergap, config.coverangle, config.coverdepth, config.coveroffset,
+				if (coverflow) coverflow.destroy();
+				coverflow = new CoverFlow(datalist, config.coverwidth, config.coverheight, config.covergap, config.coverangle, config.coverdepth, config.coveroffset,
 								config.opacitydecrease, config.backgroundcolor, config.reflectionopacity, config.reflectionratio, config.reflectionoffset,
 								config.removeblackborder, config.fixedsize, config.tweentime, config.focallength);
-				addChild(flow);
+				addChild(coverflow);
 				afterFlow();
 			} else {
 				var ldr:URLLoader = new URLLoader();
@@ -390,19 +387,19 @@ package com.wessite {
 				}
 			}
 			
-			if (flow) flow.destroy();
-			flow = new Flow(datalist, config.coverwidth, config.coverheight, config.covergap, config.coverangle, config.coverdepth, config.coveroffset,
+			if (coverflow) coverflow.destroy();
+			coverflow = new CoverFlow(datalist, config.coverwidth, config.coverheight, config.covergap, config.coverangle, config.coverdepth, config.coveroffset,
 							config.opacitydecrease, config.backgroundcolor, config.reflectionopacity, config.reflectionratio, config.reflectionoffset,
 							config.removeblackborder, config.fixedsize, config.tweentime, config.focallength);
-			addChild(flow);
+			addChild(coverflow);
 			afterFlow();
-			flow.to(0);
+			coverflow.to(0);
 		}
 		
 		private function afterFlow():void {
 		
-			flow.onFocus(coverFocus);
-			flow.onClick(coverClick);
+			coverflow.onFocus(coverFocus);
+			coverflow.onClick(coverClick);
 			
 			if (textField && contains(textField)) removeChild(textField);
 			if (config.showtext == true) {
@@ -432,7 +429,7 @@ package com.wessite {
 			if (config.onidle == 'hide') {
 				this.visible = false;
 				this.alpha = 0;
-				flow.hide(null);
+				coverflow.hide(null);
 				textField.alpha = 0;
 				stage.frameRate = 30; // if the plugin is hidden save some CPU
 
@@ -462,7 +459,7 @@ package com.wessite {
 				hide();
 			} else if (config.file == undefined) {
 				// use indexMap to resolve the correct cover index
-				flow.to(indexMap.indexOf(playlist.currentIndex));
+				coverflow.to(indexMap.indexOf(playlist.currentIndex));
 			}
 		}
 		
@@ -475,7 +472,7 @@ package com.wessite {
 		}
 		
 		private function rotateHandler(e:TimerEvent=null):void {
-			flow.next();
+			coverflow.next();
 		}
 		
 		private function stopHandler(e:ViewEvent=null):void {
@@ -512,7 +509,7 @@ package com.wessite {
 		
 		public function resize(wid:Number, hei:Number):void {
 			
-			if (flow && flow.visible == false) {
+			if (coverflow && coverflow.visible == false) {
 				visible = false;
 			}
 			
@@ -540,9 +537,9 @@ package com.wessite {
 				mask.y = y;
 			}
 		
-			if (flow) {
-				flow.x = wid * 0.5 + config.xposition;
-				flow.y = hei * 0.5 + config.yposition;
+			if (coverflow) {
+				coverflow.x = wid * 0.5 + config.xposition;
+				coverflow.y = hei * 0.5 + config.yposition;
 			}
 		
 			if (textField) {
@@ -552,11 +549,11 @@ package com.wessite {
 		}
 		
 		//public for other plugins to make use of
-		public function left():void { flow.left(); }
-		public function right():void { flow.right(); }
-		public function prev():void { flow.prev(); }
-		public function next():void { flow.next(); }
-		public function to(index:int):void { flow.to(index); }
+		public function left():void { coverflow.left(); }
+		public function right():void { coverflow.right(); }
+		public function prev():void { coverflow.prev(); }
+		public function next():void { coverflow.next(); }
+		public function to(index:int):void { coverflow.to(index); }
 		
 		public function onFocus(c:*):void {
 			focusCallbacks.push(c);
