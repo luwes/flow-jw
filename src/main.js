@@ -96,22 +96,11 @@
 			for (var prp in defaultConfig) {
 				if (config[prp] === undefined) config[prp] = defaultConfig[prp];
 			}
-	
-			var css = '.jwplayer_flow {overflow:hidden;-webkit-touch-callout:none;-webkit-text-size-adjust:none;-webkit-tap-highlight-color:rgba(0,0,0,0);opacity:1;-webkit-transition:opacity .7s;}' +
-			'.jwplayer_flow div.flow_wrap {position:absolute;left:50%;top:50%;-webkit-perspective:250;-webkit-transform-style:preserve-3d;}' +
-			'.jwplayer_flow div.flow_tray {-webkit-transform-style:preserve-3d;}' +
-			'.jwplayer_flow div.flow_tray,.jwplayer_flow div.flow_cell {position:absolute;-webkit-transform:translate3d(0,0,0);-webkit-backface-visibility:hidden;-webkit-transition:-webkit-transform .8s cubic-bezier(0.190,1.000,0.220,1.000);}' +
-			'.jwplayer_flow div.flow_cell canvas {position:absolute;opacity:1;-webkit-transition:opacity .7s;}' +
-			'#flow_textfield {position:absolute;width:100%;opacity:1;-webkit-transition:opacity .7s;}' +
-			'#flow_textfield h1,#flow_textfield h2{margin:0;}';
 
-			var head = document.getElementsByTagName('head')[0];
-			var element = document.createElement('style');
-			element.appendChild(document.createTextNode(css));
-			element.appendChild(document.createTextNode(config.textstyle));
-			head.appendChild(element);
+			C.Utils.inject(mydir + "flow.css");
+			C.Utils.inject(config.textstyle);
 			
-			div.className += "jwplayer_flow";
+			C.Utils.addClass(div, 'jwplayer_flow');
 			div.addEventListener('webkitTransitionEnd', divTransitionEnd);
 	
 			slideSize = config.size;

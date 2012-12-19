@@ -32,13 +32,36 @@
 			element.className += " " + classname;
 		}
 	};
+
+	C.Utils.inject = function(value) {
+
+		var head = document.getElementsByTagName('head')[0];
+		var element;
+
+		switch (value.slice(-3)) {
+			case 'css':
+				element = document.createElement('link');
+				element.rel = "stylesheet";
+				element.href = value;
+				break;
+			case '.js':
+				element = document.createElement('script');
+				element.src = value;
+				break;
+			default:
+				element = document.createElement('style');
+				element.appendChild(document.createTextNode(value));
+		}
+
+		head.appendChild(element);
+	};
 	
 })(window.flow);
 
 
 if (!Array.indexOf) {
 	Array.prototype.indexOf = function(obj) {
-		for (var i=0; i<this.length; i++) {
+		for (var i = 0; i < this.length; i++) {
 			if (this[i] == obj) {
 				return i;
 			}
