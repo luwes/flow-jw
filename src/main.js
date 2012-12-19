@@ -76,7 +76,7 @@
 			reflectionoffset:		0,
 			showduration:			true,
 			showtext:				true,
-			textstyle:				'div#flow_textfield{color:#f1f1f1; text-align:center; font-family:Arial Rounded MT Bold;} #flow_textfield h1{font-size:14px; font-weight:normal; line-height:21px;} #flow_textfield h2{font-size:11px; font-weight:normal;}',
+			textstyle:				'div.flow_textfield{color:#f1f1f1; text-align:center; font-family:Arial Rounded MT Bold;} .flow_textfield h1{font-size:14px; font-weight:normal; line-height:21px;} .flow_textfield h2{font-size:11px; font-weight:normal;}',
 			textoffset:				75,
 			tweentime:				0.8,
 			rotatedelay:			0,
@@ -369,8 +369,8 @@
 			
 			if (textField) div.removeChild(textField);
 			if (config.showtext === true) {
-				textField = document.createElement("div");
-				textField.setAttribute('id', 'flow_textfield');
+				textField = document.createElement('div');
+				textField.className = "flow_textfield";
 				div.appendChild(textField);
 			}
 			

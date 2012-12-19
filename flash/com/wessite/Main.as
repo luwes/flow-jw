@@ -77,7 +77,7 @@ package com.wessite {
 			reflectionoffset: 		0,
 			showduration:			true,
 			showtext: 				true,
-			textstyle:				'div#flow_textfield{color:#f1f1f1; text-align:center; font-family:Arial Rounded MT Bold;} #flow_textfield h1{font-size:14px; font-weight:normal; line-height:21px;} #flow_textfield h2{font-size:11px; font-weight:normal;}',
+			textstyle:				'div.flow_textfield{color:#f1f1f1; text-align:center; font-family:Arial Rounded MT Bold;} .flow_textfield h1{font-size:14px; font-weight:normal; line-height:21px;} .flow_textfield h2{font-size:11px; font-weight:normal;}',
 			textoffset: 			75,
 			tweentime: 				0.8,
 			framerate: 				60,
@@ -407,7 +407,7 @@ package com.wessite {
 			if (textField && contains(textField)) removeChild(textField);
 			if (config.showtext == true) {
 				var style:StyleSheet = new StyleSheet();
-				config.textstyle = config.textstyle.replace(/#flow_textfield/g, '');
+				config.textstyle = config.textstyle.replace(/.flow_textfield/g, '');
 				config.textstyle = config.textstyle.replace(/font-size:\s*?(\d+?)[a-z]*?;(.*?)line-height:\s*?(\d+?)[a-z]*?[;}]/g, function():String {
     				return 'font-size:' + arguments[1] + ';' + arguments[2] + 'leading:' + ((arguments[3] - arguments[1]) / 2) + ';';
 				});
