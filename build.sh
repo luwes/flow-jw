@@ -8,6 +8,7 @@ uglifyjs2	src/Tween.js \
 			src/cover.js \
 			src/touchcontroller.js \
 			src/delegate.js \
+			src/utils.js \
 			src/main.js \
 			-o flow.js -m
 	
