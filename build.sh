@@ -4,6 +4,7 @@ cd $(dirname $0)
 
 echo "Compiling..."
 uglifyjs2	src/Tween.js \
+			src/modernizr.js \
 			src/main.js \
 			src/coverflow.js \
 			src/cover.js \
