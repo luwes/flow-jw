@@ -27,7 +27,7 @@
 		var _this = this;
 		var playlist;
 		
-		var flow, textField;
+		var coverflow, textField;
 		var datalist, indexMap;
 		var animating = false;
 		var rotateInterval;
@@ -240,7 +240,7 @@
 					if (config.showtext === true) {
 						textField.style.opacity = 0;
 					}
-					flow.hide(hideBack);
+					coverflow.hide(hideBack);
 				}, 100);
 
 				showVideoElement();
@@ -286,7 +286,7 @@
 			if (config.showtext === true) {
 				textField.style.opacity = 1;
 			}
-			flow.show(showComplete);
+			coverflow.show(showComplete);
 		}
 		
 		function showComplete() {
@@ -321,11 +321,11 @@
 					}
 				}
 				
-				if (flow) flow.destroy();
-				flow = new Flow(div, datalist, config.coverwidth, config.coverheight, config.covergap, config.coverangle, config.coverdepth, config.coveroffset,
+				if (coverflow) coverflow.destroy();
+				coverflow = new CoverFlow(div, datalist, config.coverwidth, config.coverheight, config.covergap, config.coverangle, config.coverdepth, config.coveroffset,
 								config.opacitydecrease, config.backgroundcolor, config.reflectionopacity, config.reflectionratio, config.reflectionoffset,
 								config.removeblackborder, config.fixedsize, config.tweentime, config.focallength);
-				div.appendChild(flow.domElement);
+				div.appendChild(coverflow.domElement);
 				afterFlow();
 			} else {
 				jwplayer.utils.ajax(config.file, relatedComplete);
@@ -354,19 +354,19 @@
 				}
 			}
 			
-			if (flow) flow.destroy();
-			flow = new Flow(div, datalist, config.coverwidth, config.coverheight, config.covergap, config.coverangle, config.coverdepth, config.coveroffset,
+			if (coverflow) coverflow.destroy();
+			coverflow = new CoverFlow(div, datalist, config.coverwidth, config.coverheight, config.covergap, config.coverangle, config.coverdepth, config.coveroffset,
 							config.opacitydecrease, config.backgroundcolor, config.reflectionopacity, config.reflectionratio, config.reflectionoffset,
 							config.removeblackborder, config.fixedsize, config.tweentime, config.focallength);
-			div.appendChild(flow.domElement);
+			div.appendChild(coverflow.domElement);
 			afterFlow();
-			flow.to(0);
+			coverflow.to(0);
 		}
 		
 		function afterFlow() {
 		
-			flow.onFocus(coverFocus);
-			flow.onClick(coverClick);
+			coverflow.onFocus(coverFocus);
+			coverflow.onClick(coverClick);
 			
 			if (textField) div.removeChild(textField);
 			if (config.showtext === true) {
@@ -383,7 +383,7 @@
 				div.style.display = 'none';
 				setVisible(false);
 				div.style.opacity = 0;
-				flow.hide(null);
+				coverflow.hide(null);
 				textField.style.opacity = 0;
 			}
 	
@@ -410,7 +410,7 @@
 				_this.hide();
 			} else if (config.file === undefined) {
 				// use indexMap to resolve the correct cover index
-				flow.to(indexMap.indexOf(player.getCurrentItem()));
+				coverflow.to(indexMap.indexOf(player.getCurrentItem()));
 			}
 		}
 		
@@ -455,41 +455,41 @@
 		};
 			
 		function rotateHandler() {
-			flow.next();
+			coverflow.next();
 		}
 			
 		//public for other plugins to make use of
 		this.left = function() {
 			if (player.getRenderingMode() == "html5") {
-				flow.left();
+				coverflow.left();
 			} else if (player.getRenderingMode() == "flash") {
 				player.getContainer().flowLeft();
 			}
 		};
 		this.right = function() {
 			if (player.getRenderingMode() == "html5") {
-				flow.right();
+				coverflow.right();
 			} else if (player.getRenderingMode() == "flash") {
 				player.getContainer().flowRight();
 			}
 		};
 		this.prev = function() {
 			if (player.getRenderingMode() == "html5") {
-				flow.prev();
+				coverflow.prev();
 			} else if (player.getRenderingMode() == "flash") {
 				player.getContainer().flowPrev();
 			}
 		};
 		this.next = function() {
 			if (player.getRenderingMode() == "html5") {
-				flow.next();
+				coverflow.next();
 			} else if (player.getRenderingMode() == "flash") {
 				player.getContainer().flowNext();
 			}
 		};
 		this.to = function(index) {
 			if (player.getRenderingMode() == "html5") {
-				flow.to(index);
+				coverflow.to(index);
 			} else if (player.getRenderingMode() == "flash") {
 				player.getContainer().flowTo(index);
 			}
@@ -589,9 +589,9 @@
 				div.style.width = flowWidth + "px";
 				div.style.height = flowHeight + "px";
 		
-				if (flow) {
-					flow.domElement.style.left = (flowWidth * 0.5 + config.xposition) + "px";
-					flow.domElement.style.top = (flowHeight * 0.5 + config.yposition) + "px";
+				if (coverflow) {
+					coverflow.domElement.style.left = (flowWidth * 0.5 + config.xposition) + "px";
+					coverflow.domElement.style.top = (flowHeight * 0.5 + config.yposition) + "px";
 				}
 		
 				if (textField) {
@@ -613,474 +613,6 @@
 			TWEEN.update();
 		}
 		animate();
-	};
-	
-	/*-------------------------Flow-------------------------*/
-	
-	Flow = function(div, playlist, wid, hei, gap, angle, depth, offset,
-					opacity, backColor, reflectOpacity, reflectRatio, reflectOffset,
-					removeBlackBorder, fixedSize, duration, focalLength) {
-		
-		var _this = this;
-		
-		this.GAP = gap;
-		this.ANGLE = angle;
-		this.DEPTH = -depth;
-		this.OFFSET = offset + gap;
-		this.T_NEG_ANGLE = "rotateY(" + (-this.ANGLE) + "deg)";
-		this.T_ANGLE = "rotateY(" + this.ANGLE + "deg)";
-		this.OPACITY = opacity;
-		this.DURATION = duration;
-		
-		this.hideComplete = null;
-		this.showComplete = null;
-		
-		var covers = [];
-		var coversLength = playlist.length;
-		var completeLength = 0;
-		var maxCoverHeight = 0;
-		var current = 0;
-		
-		var focusCallbacks = [];
-		var clickCallbacks = [];
-		
-		
-		this.domElement = document.createElement('div');
-		this.domElement.setAttribute('id', 'flow_wrap');
-		this.domElement.setAttribute('class', 'flow_wrap');
-		var tray = document.createElement('div');
-		tray.setAttribute('id', 'flow_tray');
-		tray.setAttribute('class', 'flow_tray');
-		this.domElement.appendChild(tray);
-		
-		this.domElement.style.webkitPerspective = focalLength;
-		
-		var delegate = new FlowDelegate(this, tray);
-		var controller = new TouchController(this, delegate, tray);
-		var cover = null;
-
-		for (var i=0; i<playlist.length; i++) {
-			
-			cover = new FlowItem(_this, i, playlist[i].image, playlist[i].duration, wid, hei, reflectOpacity,
-									reflectRatio, reflectOffset, backColor, removeBlackBorder, fixedSize);
-	
-			delegate.cells.push(cover);
-			tray.appendChild(cover.domElement);
-			cover.domElement.onmousedown = clickHandler;
-			cover.domElement.style.webkitTransitionDuration = duration + "s";
-			covers[i] = cover;
-		}
-		//cover holds the last cover added
-		cover.domElement.firstChild.addEventListener('webkitTransitionEnd', coverTransitionEnd, true);
-		
-		function coverTransitionEnd(e) {
-			e.stopPropagation();
-
-			if (parseInt(cover.domElement.firstChild.style.opacity, 10) === 0) {
-				_this.domElement.style.opacity = 0;
-				if (typeof _this.hideComplete == 'function') _this.hideComplete();
-			} else if (parseInt(cover.domElement.firstChild.style.opacity, 10) === 1) {
-				if (typeof _this.showComplete == 'function') _this.showComplete();
-			}
-		}
-		
-		this.hide = function(callback) {
-			_this.hideComplete = callback;
-
-			for (var i=0; i<covers.length; i++) {
-				covers[i].domElement.firstChild.style.opacity = 0;
-			}
-		};
-		
-		this.show = function(callback) {
-			_this.showComplete = callback;
-			_this.domElement.style.opacity = 1;
-			for (var i=0; i<covers.length; i++) {
-				covers[i].domElement.firstChild.style.opacity = 1;
-			}
-		};
-
-		this.itemComplete = function(h) {
-			maxCoverHeight = maxCoverHeight < h ? h : maxCoverHeight;
-			++completeLength;
-			if (completeLength == coversLength) {
-				_this.to(0);
-				for (var i = 0; i < coversLength; i++) {
-					covers[i].setY(maxCoverHeight);
-				}
-			}
-		};
-	
-		this.left = function() {
-			if (current > 0) _this.to(current - 1);
-		};
-			
-		this.right = function() {
-			if (current < coversLength - 1) _this.to(current + 1);
-		};
-		
-		this.prev = function() {
-			if (current > 0) _this.to(current - 1);
-			else _this.to(coversLength - 1);
-		};
-		
-		this.next = function() {
-			if (current < coversLength - 1) _this.to(current + 1);
-			else _this.to(0);
-		};
-		
-		this.to = function(index) {
-			if (index > coversLength - 1) index = coversLength - 1;
-			else if (index < 0) index = 0;
-						
-			current = index;
-			controller.to(index);
-		};
-		
-		this.focused = function(index) {
-			for (var i=0; i<focusCallbacks.length; i++) {
-				focusCallbacks[i](index);
-			}
-		};
-		
-		this.clicked = function(index) {
-			for (var i=0; i<clickCallbacks.length; i++) {
-				clickCallbacks[i](index);
-			}
-		};
-		
-		this.onFocus = function(c) {
-			focusCallbacks.push(c);
-		};
-		
-		this.onClick = function(c) {
-			clickCallbacks.push(c);
-		};
-		
-		this.destroy = function() {
-			div.removeChild(_this.domElement);
-			
-			div.removeEventListener('touchstart', controller, true);
-			window.removeEventListener('keydown', keyboard, false);
-		};
-		
-		function clickHandler(e) {
-			var i = 0, child = e.currentTarget;
-			while (child = child.previousSibling) ++i;
-			var flowItem = covers[i];
-			if (e.offsetY < flowItem.halfHeight) {
-				e.preventDefault();
-	
-				if (flowItem.index != current) _this.to(flowItem.index);
-				else _this.clicked(flowItem.index);
-			}
-		}
-	
-		div.addEventListener('touchstart', controller, true);
-		window.addEventListener('keydown', keyboard, false);
-		function keyboard(e) {
-			switch (e.keyCode) {
-				case 37: _this.left(); break;
-				case 39: _this.right(); break;
-				case 38: _this.to(0); break;
-				case 40: _this.to(coversLength - 1); break;
-				case 32: _this.clicked(current); break;
-			}
-		}
-	};
-	
-	/*-------------------------FlowItem-------------------------*/
-	
-	FlowItem = function(flow, index, url, duration, coverWidth, coverHeight, reflectOpacity,
-						reflectRatio, reflectOffset, backColor, removeBlackBorder, fixedSize) {
-	
-		var _this = this;
-		
-		var newWidth;
-		var newHeight;
-		
-		this.index = index;
-		this.halfHeight = 0;
-		
-		this.domElement = document.createElement("div");
-		this.domElement.className = "flow_cell";
-		var cellStyle = this.domElement.style;
-		cellStyle.backgroundColor = backColor;
-		
-		var bitmap = document.createElement("canvas");
-		_this.domElement.appendChild(bitmap);
-	
-		var image = document.createElement("img");
-		image.addEventListener("load", onComplete);
-		image.src = url;
-		
-		function onComplete() {
-	
-			var wid = image.width;
-			var hei = image.height;
-				
-			var cropTop = 0;
-			var cropBottom = 0;
-			var cropLeft = 0;
-				
-			// algorithm to remove top and bottom black border of thumbnail
-			if (removeBlackBorder) {
-			
-				var b = document.createElement("canvas");
-				b.width = wid;
-				b.height = hei;
-				var ctx = b.getContext('2d');
-				ctx.drawImage(image, 0, 0);
-				var bmd = ctx.getImageData(0, 0, wid, hei).data;
-				
-				var sum = 0;
-				var x = 0;
-				var i = 0;
-
-				for (var y=0; y < hei; y++) {
-					sum = 0;
-					for (x=0; x < wid; x++) {
-						i = (y * wid + x) * 4;
-						sum += ((bmd[i] << 16) | (bmd[i+1] << 8) | bmd[i+2]);
-					}
-					if (sum/wid < 0x070707) cropTop++;
-					else break;
-				}
-				
-				for (y=hei-1; y>=0; y--) {
-					sum = 0;
-					for (x=0; x < wid; x++) {
-						i = (y * wid + x) * 4;
-						sum += ((bmd[i] << 16) | (bmd[i+1] << 8) | bmd[i+2]);
-					}
-					
-					if (sum/wid < 0x070707) cropBottom++;
-					else break;
-				}
-				
-				hei -= (cropTop + cropBottom);
-			}
-						
-			var scale;
-			// calculate the image size, ratio values
-			if (fixedSize) {
-				newWidth = Math.round(coverWidth);
-				newHeight = Math.round(coverHeight);
-				if (newWidth / wid < newHeight / hei) {
-					scale = newHeight / hei;
-					cropLeft += (wid - newWidth / scale) * 0.5;
-				} else {
-					scale = newWidth / wid;
-					cropTop += (hei - newHeight / scale) * 0.5;
-				}
-			} else {
-				if (coverWidth >= coverHeight) {
-					newWidth = Math.round(wid / hei * coverHeight);
-					newHeight = Math.round(coverHeight);
-					scale = coverHeight / hei;
-				} else {
-					newWidth = Math.round(coverWidth);
-					newHeight = Math.round(hei / wid * coverWidth);
-					scale = coverWidth / wid;
-				}
-			}
-			
-			_this.halfHeight = newHeight;
-			
-			cellStyle.top = -(newHeight * 0.5) + "px";
-			cellStyle.left = -(newWidth * 0.5) + "px";
-			cellStyle.width = (newWidth) + "px";
-			cellStyle.height = (newHeight) + "px";
-	
-			bitmap.width = newWidth;
-			bitmap.height = newHeight * 2;
-			var bitmapCtx = bitmap.getContext('2d');
-			bitmapCtx.drawImage(image, cropLeft, cropTop, wid-2*cropLeft, hei-2*cropTop, 0, 0, newWidth, newHeight);
-	
-			if (reflectOpacity > 0) {
-				cellStyle.height = (newHeight * 2) + "px";
-				_this.reflect(bitmap, newWidth, newHeight, reflectOpacity, reflectRatio, reflectOffset);
-			}
-		
-			flow.itemComplete(newHeight);
-		}
-		
-		this.setY = function(maxCoverHeight) {
-			var offsetY = maxCoverHeight * 0.5 - (maxCoverHeight - newHeight);
-			this.domElement.style.top = -offsetY + "px";
-		};
-	};
-	
-	FlowItem.prototype.reflect = function(bitmap, wid, hei, reflectOpacity, reflectRatio, reflectOffset) {
-	
-		var ctx = bitmap.getContext("2d");
-		ctx.save();
-		ctx.scale(1, -1);
-		ctx.drawImage(bitmap, 0, -hei*2 - reflectOffset);
-		ctx.restore();
-		ctx.globalCompositeOperation = "destination-out";
-	
-		var gradient = ctx.createLinearGradient(0, 0, 0, hei);
-		gradient.addColorStop(reflectRatio/255, "rgba(255, 255, 255, 1.0)");
-		gradient.addColorStop(0, "rgba(255, 255, 255, " + (1 - reflectOpacity) + ")");
-		ctx.translate(0, hei + reflectOffset);
-		ctx.fillStyle = gradient;
-		ctx.fillRect(0, 0, wid, hei);
-	};
-	
-	/*-------------------------TouchController-------------------------*/
-	
-	TouchController = function(flow, delegate, elem) {
-		this.flow = flow;
-		this.delegate = delegate;
-		this.elem = elem;
-		
-		this.currentX = 0;
-	};
-	
-	TouchController.prototype.touchstart = function(e) {
-		e.stopImmediatePropagation();
-		this.startX = e.touches[0].pageX - this.currentX;
-		this.pageY = e.touches[0].pageY;
-		this.touchMoved = false;
-		window.addEventListener("touchmove", this, true);
-		window.addEventListener("touchend", this, true);
-		this.elem.style.webkitTransitionDuration = "0s";
-	};
-	
-	TouchController.prototype.touchmove = function(e) {
-		e.stopImmediatePropagation();
-		this.touchMoved = true;
-		this.lastX = this.currentX;
-		this.lastMoveTime = new Date().getTime();
-		this.currentX = e.touches[0].pageX - this.startX;
-		this.delegate.update(this.currentX);
-	};
-	
-	TouchController.prototype.touchend = function(e) {
-		e.stopImmediatePropagation();
-		window.removeEventListener("touchmove", this, true);
-		window.removeEventListener("touchend", this, true);
-	
-		this.elem.style.webkitTransitionDuration = this.flow.DURATION + "s";
-	
-		if (this.touchMoved) {
-			/* Approximate some inertia -- the transition function takes care of the decay over 0.4s for us, but we need to amplify the last movement */
-			var delta = this.currentX - this.lastX;
-			var dt = new Date().getTime() - this.lastMoveTime + 1;
-			
-			this.currentX = this.currentX + delta * 50 / dt;
-			this.delegate.updateTouchEnd(this);
-		} else {
-			this.delegate.click(e, this.pageY, this.currentX);
-		}
-	};
-	
-	TouchController.prototype.to = function(index) {
-		this.currentX = -index * this.delegate.flow.GAP;
-		this.delegate.update(this.currentX);
-	};
-	
-	TouchController.prototype.handleEvent = function(e) {
-		this[e.type](e);
-		e.preventDefault();
-	};
-	
-	/*-------------------------FlowDelegate-------------------------*/
-	
-	FlowDelegate = function(flow, elem) {
-		this.flow = flow;
-		this.elem = elem;
-		
-		this.cells = [];
-		this.transforms = [];
-		
-		this.prevF = -1;
-	};
-	
-	FlowDelegate.prototype.updateTouchEnd = function(controller) {
-		var i = this.getFocusedCell(controller.currentX);
-		controller.currentX = -i * this.flow.GAP;
-		this.update(controller.currentX);
-	};
-	
-	FlowDelegate.prototype.getFocusedCell = function(currentX) {
-		var i = -Math.round(currentX / this.flow.GAP);
-		return Math.min(Math.max(i, 0), this.cells.length - 1);
-	};
-	
-	FlowDelegate.prototype.getFocusedCellOne = function(currentX) {
-		var i = -Math.round(currentX / this.flow.GAP);
-		return Math.min(Math.max(i, -1), this.cells.length);
-	};
-	
-	FlowDelegate.prototype.click = function(e, pageY, currentX) {
-		var i = -Math.round(currentX / this.flow.GAP);
-		var cell = this.cells[i];
-		if (cell.domElement == e.target.parentNode) {
-			var pos = this.findPos(cell.domElement);
-			var y = pageY - pos.y;
-			if (y < cell.halfHeight) {
-				this.flow.clicked(cell.index);
-			}
-		}
-	};
-	
-	FlowDelegate.prototype.findPos = function(obj) {
-		var curleft = 0;
-		var curtop = 0;
-		if (obj.offsetParent) {
-			do {
-				curleft += obj.offsetLeft;
-				curtop += obj.offsetTop;
-			} while (obj = obj.offsetParent);
-			return { x: curleft, y: curtop };
-		}
-	};
-	
-	FlowDelegate.prototype.setStyleForCell = function(cell, i, transform) {
-		if (this.transforms[i] != transform) {
-			cell.domElement.style.webkitTransform = transform;
-			this.transforms[i] = transform;
-		}
-	};
-	
-	FlowDelegate.prototype.transformForCell = function(f, i, offset) {
-		/*
-			This function needs to be fast, so we avoid function calls, divides, Math.round,
-			and precalculate any invariants we can.
-		*/
-		var x = (i * this.flow.GAP);
-		if (f == i) {
-			return "translate3d(" + x + "px, 0, 0)";
-		} else if (i > f) {
-			return "translate3d(" + (x + this.flow.OFFSET) + "px, 0, " + this.flow.DEPTH + "px) " + this.flow.T_NEG_ANGLE;
-		} else {
-			return "translate3d(" + (x - this.flow.OFFSET) + "px, 0, " + this.flow.DEPTH + "px) " + this.flow.T_ANGLE;
-		}
-	};
-	
-	FlowDelegate.prototype.update = function(currentX) {
-		this.elem.style.webkitTransform = "translate3d(" + (currentX) + "px, 0, 0)";
-		/*
-			It would be nice if we only updated dirty cells... for now, we use a cache
-		*/
-		var f = this.getFocusedCellOne(currentX);
-		if (f != this.prevF) {
-			this.flow.focused(f);
-			for (var i=0; i<this.cells.length; i++) {
-				if (i < f) {
-					this.cells[i].domElement.style.zIndex = i;
-				} else {
-					this.cells[i].domElement.style.zIndex = this.cells.length-i+f-1;
-				}
-			}
-			this.prevF = f;
-		}
-		
-		for (var j=0; j<this.cells.length; j++) {
-			this.setStyleForCell(this.cells[j], j, this.transformForCell(f, j, currentX));
-		}
 	};
 	
 	jwplayer().registerPlugin('flow', '6.0', main, './flow.swf');

@@ -3,7 +3,11 @@
 cd $(dirname $0)
 
 echo "Compiling..."
-uglifyjs2 src/Tween.js \
-          src/flow.js \
-          -o flow.js -m
+uglifyjs2	src/Tween.js \
+			src/coverflow.js \
+			src/cover.js \
+			src/touchcontroller.js \
+			src/delegate.js \
+			src/main.js \
+			-o flow.js -m
 	
