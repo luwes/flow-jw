@@ -25,7 +25,7 @@
 		})();
 	}
 
-	var scripts = document.getElementsByTagName("head")[0].getElementsByTagName('script');
+	var scripts = document.getElementsByTagName('head')[0].getElementsByTagName('script');
 	for (var i = 0; i < scripts.length; i++) {
 		var match = scripts[i].src.match(/(.*?)flow-?\d?\.js/);
 		if (match) {
@@ -338,7 +338,7 @@
 		
 		function relatedComplete(g) {
 			try {
-				var playlistItems = jwplayer.utils.parsers.rssparser.parse(g.responseXML.firstChild);
+				var playlistItems = jwplayer.html5.parsers.rssparser.parse(g.responseXML.firstChild);
 				if (playlistItems.length > 0) {
 					relatedHandler(playlistItems);
 				}
