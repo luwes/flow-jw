@@ -38,21 +38,22 @@
 		//repeat: 'list',
 		//primary: 'flash',
 		width: 480,
-		height: 450,
+		height: 350,
 		playlist: './playlist.xml',
 		plugins: {
-			'./3.0/flow.js': {
+			'./flow.js': {
 				//dockicon: false,
+				docktext: 'Coverflow',
 				coverwidth: 150,
 				coverheight: 100,
 				fixedsize: true,
-				position: 'bottom',
+				//position: 'bottom',
 				size: 170,
-				onplaying: 'show',
+				//onplaying: 'show',
 				onpaused: 'show',
 				//oncompleted: 'hide',
 				yposition: -15,
-				textoffset: 45
+				textoffset: 105
 			}
 		}
 	});
