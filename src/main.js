@@ -82,6 +82,7 @@
 			tweentime:				0.8,
 			rotatedelay:			0,
 			dockicon:				true,
+			docktext:				'Show Playlist',
 			onidle:					'show',
 			onpaused:				'hide',
 			onplaying:				'hide',
@@ -115,7 +116,7 @@
 	
 			if (config.dockicon === true && typeof player.addButton === "function") {
 				var dockIcon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAPCAYAAADgbT9oAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABV0RVh0Q3JlYXRpb24gVGltZQA2LzE4LzEx7HcX+AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAABCSURBVDiN7ZMxDgAgCAMP4/+/XAcjIQ4OBDduYeq1CyZJgFGLRrHQmbGFvVxJ18kawLfFLW5xix/El7brZvDst8ULHQsIIS+DTYcAAAAASUVORK5CYII=";
-				player.addButton(dockIcon, 'Show Playlist', showOnDockButtonClick, 'flow');
+				player.addButton(dockIcon, config.docktext, showOnDockButtonClick, 'flow');
 			}
 						
 			player.onPlaylist(playlistHandler);
@@ -149,7 +150,7 @@
 		
 		function showOnDockButtonClick() {
 			// Update to support OVA
-			if (!playlist[player.getCurrentItem()]['ova.hidden']) {
+			if (!playlist[getPlaylistIndex()]['ova.hidden']) {
 				player.pause(true);
 				_this.show();
 			}
@@ -199,7 +200,7 @@
 			if (config.rotatedelay > 0 && rotateInterval) { _this.stopRotation(); }
 	
 			if (config.file === undefined) {
-				if (indexMap[index] != player.getCurrentItem()) player.playlistItem(indexMap[index]);
+				if (indexMap[index] != getPlaylistIndex()) player.playlistItem(indexMap[index]);
 				else if (player.getState() == 'PLAYING') player.pause(true);
 				else player.play(true);
 			} else {
@@ -406,15 +407,23 @@
 				}
 			}
 		}
+
+		function getPlaylistIndex() {
+			if (player.hasOwnProperty('getCurrentItem')) {
+				return player.getCurrentItem();
+			} else if (player.hasOwnProperty('getPlaylistIndex')) {
+				return player.getPlaylistIndex();
+			}
+		}
 		
 		function itemHandler(data) {
 			// Update to support OVA
-			if (playlist[player.getCurrentItem()]['ova.hidden']) {
+			if (playlist[getPlaylistIndex()]['ova.hidden']) {
 				// hide plugin when an ad is shown
 				_this.hide();
 			} else if (config.file === undefined) {
 				// use indexMap to resolve the correct cover index
-				coverflow.to(indexMap.indexOf(player.getCurrentItem()));
+				coverflow.to(indexMap.indexOf(getPlaylistIndex()));
 			}
 		}
 		

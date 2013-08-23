@@ -80,6 +80,7 @@ package flow {
 			framerate: 				60,
 			rotatedelay: 			0,
 			dockicon:		 		true,
+			docktext:				'Show Playlist',
 			onidle:					'show',
 			onpaused:				'hide',
 			onplaying:				'hide',
@@ -143,7 +144,7 @@ package flow {
 
 			if (config.dockicon == true && player.controls.dock) {
 				dockIcon = new FlowDockIcon();
-				player.controls.dock.addButton(dockIcon, 'Show Playlist', showOnDockButtonClick);
+				player.controls.dock.addButton(dockIcon, config.docktext, showOnDockButtonClick);
 			}
 
 			player.addEventListener(PlaylistEvent.JWPLAYER_PLAYLIST_LOADED, playlistHandler);
