@@ -14,9 +14,9 @@
 
 .flow_wrap {
 	position: absolute;
-	left: 50%;
-	top: 50%;
-	-webkit-perspective: 250;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
 }
 
 .flow_wrap,
@@ -40,6 +40,7 @@
 }
 
 .flow_cell canvas {
+	outline: 1px solid transparent;
 	position: absolute;
 	opacity: 1;
 	-webkit-transition: opacity .7s;
