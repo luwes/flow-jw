@@ -32,9 +32,23 @@
 		var i = -Math.round(currentX / this.config.covergap);
 		var cell = this.cells[i];
 		if (cell.domElement == e.target.parentNode) {
-			if (pageY < this.offsetY + cell.halfHeight / 2) {
+			var pos = this.findPos(this.elem);
+			var y = pos.y + this.offsetY + cell.halfHeight / 2;
+			if (pageY < y) {
 				this.flow.clicked(cell.index);
 			}
+		}
+	};
+
+	C.Delegate.prototype.findPos = function(obj) {
+		var curleft = 0;
+		var curtop = 0;
+		if (obj.offsetParent) {
+			do {
+				curleft += obj.offsetLeft;
+				curtop += obj.offsetTop;
+			} while ((obj = obj.offsetParent) !== null);
+			return { x: curleft, y: curtop };
 		}
 	};
 
