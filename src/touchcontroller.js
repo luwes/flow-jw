@@ -1,9 +1,9 @@
 (function(C) {
 
-	C.TouchController = function(flow, delegate, elem) {
-		this.flow = flow;
+	C.TouchController = function(delegate, elem, config) {
 		this.delegate = delegate;
 		this.elem = elem;
+		this.config = config;
 		
 		this.currentX = 0;
 	};
@@ -32,7 +32,7 @@
 		window.removeEventListener("touchmove", this, true);
 		window.removeEventListener("touchend", this, true);
 
-		this.elem.style.webkitTransitionDuration = this.flow.DURATION + "s";
+		this.elem.style.webkitTransitionDuration = this.config.tweentime + "s";
 
 		if (this.touchMoved) {
 			/* Approximate some inertia -- the transition function takes care of the decay over 0.4s for us, but we need to amplify the last movement */
@@ -47,7 +47,7 @@
 	};
 
 	C.TouchController.prototype.to = function(index) {
-		this.currentX = -index * this.delegate.flow.GAP;
+		this.currentX = -index * this.config.covergap;
 		this.delegate.update(this.currentX);
 	};
 

@@ -1,19 +1,11 @@
 (function(C) {
 
-	C.CoverFlow = function(div, playlist, wid, hei, gap, angle, depth, offset,
-					opacity, backColor, reflectOpacity, reflectRatio, reflectOffset,
-					removeBlackBorder, fixedSize, duration, focalLength) {
-		
+	C.CoverFlow = function(div, playlist, config) {
 		var _this = this;
 		
-		this.GAP = gap;
-		this.ANGLE = angle;
-		this.DEPTH = -depth;
-		this.OFFSET = offset + gap;
-		this.T_NEG_ANGLE = "rotateY(" + (-this.ANGLE) + "deg)";
-		this.T_ANGLE = "rotateY(" + this.ANGLE + "deg)";
-		this.OPACITY = opacity;
-		this.DURATION = duration;
+		this.OFFSET = config.coveroffset + config.covergap;
+		this.T_NEG_ANGLE = "rotateY(" + (-config.coverangle) + "deg)";
+		this.T_ANGLE = "rotateY(" + config.coverangle + "deg)";
 		
 		this.hideComplete = null;
 		this.showComplete = null;
@@ -34,21 +26,20 @@
 		tray.className = "flow_tray";
 		this.domElement.appendChild(tray);
 		
-		this.domElement.style[Modernizr.prefixed('perspective')] = focalLength+"px";
+		this.domElement.style[Modernizr.prefixed('perspective')] = config.focallength+"px";
 		
-		var delegate = new C.Delegate(this, tray);
-		var controller = new C.TouchController(this, delegate, tray);
+		var delegate = new C.Delegate(this, tray, config);
+		var controller = new C.TouchController(delegate, tray, config);
 		var cover = null;
 
 		for (var i = 0; i < playlist.length; i++) {
 			
-			cover = new C.Cover(this, i, playlist[i].image, playlist[i].duration, wid, hei, reflectOpacity,
-									reflectRatio, reflectOffset, backColor, removeBlackBorder, fixedSize);
+			cover = new C.Cover(this, i, playlist[i].image, playlist[i].duration, config);
 
 			delegate.cells.push(cover);
 			tray.appendChild(cover.domElement);
 			cover.domElement.onmousedown = clickHandler;
-			cover.domElement.style[Modernizr.prefixed('transitionDuration')] = duration + "s";
+			cover.domElement.style[Modernizr.prefixed('transitionDuration')] = config.tweentime + "s";
 			covers[i] = cover;
 		}
 		//cover holds the last cover added
@@ -144,6 +135,12 @@
 			div.removeEventListener('touchstart', controller, true);
 			window.removeEventListener('keydown', keyboard, false);
 		};
+
+		this.resize = function(wid, hei) {
+			delegate.offsetX = wid * 0.5 + config.xposition;
+			delegate.offsetY = hei * 0.5 + config.yposition;
+			delegate.setTrayStyle((controller.currentX + delegate.offsetX), delegate.offsetY);
+		};
 		
 		function clickHandler(e) {
 			var child = this;
@@ -175,4 +172,3 @@
 	};
 
 })(window.flow);
-

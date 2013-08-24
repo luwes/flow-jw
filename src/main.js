@@ -327,9 +327,7 @@
 				}
 				
 				if (coverflow) coverflow.destroy();
-				coverflow = new C.CoverFlow(div, datalist, config.coverwidth, config.coverheight, config.covergap, config.coverangle, config.coverdepth, config.coveroffset,
-								config.opacitydecrease, config.backgroundcolor, config.reflectionopacity, config.reflectionratio, config.reflectionoffset,
-								config.removeblackborder, config.fixedsize, config.tweentime, config.focallength);
+				coverflow = new C.CoverFlow(div, datalist, config);
 				div.appendChild(coverflow.domElement);
 				afterFlow();
 			} else {
@@ -360,9 +358,7 @@
 			}
 			
 			if (coverflow) coverflow.destroy();
-			coverflow = new C.CoverFlow(div, datalist, config.coverwidth, config.coverheight, config.covergap, config.coverangle, config.coverdepth, config.coveroffset,
-							config.opacitydecrease, config.backgroundcolor, config.reflectionopacity, config.reflectionratio, config.reflectionoffset,
-							config.removeblackborder, config.fixedsize, config.tweentime, config.focallength);
+			coverflow = new C.CoverFlow(div, datalist, config);
 			div.appendChild(coverflow.domElement);
 			afterFlow();
 			coverflow.to(0);
@@ -435,15 +431,15 @@
 		function stateHandler(data) {
 		
 			switch (player.getState()) {
-				case 'PAUSED':
-					if (config.onpaused == 'show') _this.show();
-					else if (config.onpaused == 'hide') _this.hide();
-					break;
-				case 'BUFFERING':
-				case 'PLAYING':
-					if (config.onplaying == 'show') _this.show();
-					else if (config.onplaying == 'hide') _this.hide();
-					break;
+			case 'PAUSED':
+				if (config.onpaused == 'show') _this.show();
+				else if (config.onpaused == 'hide') _this.hide();
+				break;
+			case 'BUFFERING':
+			case 'PLAYING':
+				if (config.onplaying == 'show') _this.show();
+				else if (config.onplaying == 'hide') _this.hide();
+				break;
 			}
 		}
 		
@@ -603,8 +599,7 @@
 				div.style.height = flowHeight + "px";
 		
 				if (coverflow) {
-					coverflow.domElement.style.left = (flowWidth * 0.5 + config.xposition) + "px";
-					coverflow.domElement.style.top = (flowHeight * 0.5 + config.yposition) + "px";
+					coverflow.resize(flowWidth, flowHeight);
 				}
 		
 				if (textField) {
