@@ -1,80 +1,89 @@
-<!doctype html>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>About the JW Player 5</title>
+</head>
+<body>
 
-<meta charset="utf-8">
-<title>About the JW Player 5</title>
-	
-<div id="mediaplayer">JW Player goes here</div>
-<script type="text/javascript" src="jwplayer.js"></script>
-<script type="text/javascript">
+	<div id="mediaplayer">JW Player goes here</div>
+	<script src="jwplayer.js"></script>
+	<script>
 
-	var flowPlugin;
-	
-	function jwReady() {
+		function getFlow() {
 
-		flowPlugin = jwplayer("mediaplayer").plugins['flow'];
-		
-		flowPlugin.onFocus(function(index) {
-			document.getElementById('focusindex').innerHTML = index;
-		});
-		
-		flowPlugin.onClick(function(index) {
-			document.getElementById('clickindex').innerHTML = index;
-		});
-		
-		flowPlugin.onHide(function() {
-			document.getElementById('status').innerHTML = 'hide';
-		});
-		
-		flowPlugin.onShow(function() {
-			document.getElementById('status').innerHTML = 'show';
-		});
-	}
-
-	jwplayer("mediaplayer").setup({
-		//debug: 'console',
-		//autostart: true,
-		//controlbar: 'bottom',
-		//stretching: 'exactfit',
-		//repeat: 'list',
-		//primary: 'flash',
-		width: 480,
-		height: 280,
-		playlist: './playlist.xml',
-		plugins: {
-			'./flow.js': {
-				//dockicon: false,
-				docktext: 'Coverflow',
-				coverwidth: 150,
-				coverheight: 100,
-				fixedsize: true,
-				//position: 'bottom',
-				size: 170,
-				//onplaying: 'show',
-				onpaused: 'show',
-				//oncompleted: 'hide',
-				textoffset: 75
-			}
+			return jwplayer("mediaplayer").plugins['flow'];
 		}
-	});
+		
+		function jwReady() {
 
-	jwplayer("mediaplayer").onReady(jwReady);
+			var flowPlugin = getFlow();
+			
+			flowPlugin.onFocus(function(index) {
+				document.getElementById('focusindex').innerHTML = index;
+			});
+			
+			flowPlugin.onClick(function(index) {
+				document.getElementById('clickindex').innerHTML = index;
+			});
+			
+			flowPlugin.onHide(function() {
+				document.getElementById('status').innerHTML = 'hide';
+			});
+			
+			flowPlugin.onShow(function() {
+				document.getElementById('status').innerHTML = 'show';
+			});
+		}
 
-</script>
+		jwplayer("mediaplayer").setup({
+			//debug: 'console',
+			//autostart: true,
+			//controlbar: 'bottom',
+			//stretching: 'exactfit',
+			//repeat: 'list',
+			//primary: 'flash',
+			width: 480,
+			height: 280,
+			playlist: './playlist.xml',
+			plugins: {
+				'./flow.js': {
+					//dockicon: false,
+					//docktext: 'Coverflow',
+					coverwidth: 150,
+					coverheight: 100,
+					fixedsize: true,
+					//position: 'bottom',
+					size: 170,
+					//onplaying: 'show',
+					//onpaused: 'show',
+					//oncompleted: 'hide',
+					textoffset: 75
+				}
+			}
+		});
 
-<div style="width:480px;">
-	<p style="float:right;">Focused: <b id="focusindex">0</b> | Clicked: <b id="clickindex">0</b></p>
-	<p style="margin-top:0; padding-top:1em;">
-		<a href="javascript:;" onclick="flowPlugin.left();">Left</a> - <a href="javascript:;" onclick="flowPlugin.right();">Right</a>
-	</p>
-	<p>
-		<a href="javascript:;" onclick="flowPlugin.prev();">Previous</a> - <a href="javascript:;" onclick="flowPlugin.next();">Next</a>
-	</p>
-	<p>
-		<input id="toval" value="0" size="1"> <a href="javascript:;" onclick="flowPlugin.to(document.getElementById('toval').value);">To</a>
-	</p>
-	<hr></hr>
-	<div style="float:right;">Visibility: <b id="status"></b></div>
-	<p>
-		<a href="javascript:;" onclick="flowPlugin.hide();">Hide</a> - <a href="javascript:;" onclick="flowPlugin.show();">Show</a>
-	</p>
-</div>
+		jwplayer("mediaplayer").onReady(jwReady);
+
+	</script>
+
+	<div style="width:480px;">
+		<p style="float:right;">Focused: <b id="focusindex">0</b> | Clicked: <b id="clickindex">0</b></p>
+		<p style="margin-top:0; padding-top:1em;">
+			<a href="javascript:;" onclick="getFlow().left();">Left</a> - <a href="javascript:;" onclick="getFlow().right();">Right</a>
+		</p>
+		<p>
+			<a href="javascript:;" onclick="getFlow().prev();">Previous</a> - <a href="javascript:;" onclick="getFlow().next();">Next</a>
+		</p>
+		<p>
+			<input id="toval" value="0" size="1"> <a href="javascript:;" onclick="getFlow().to(document.getElementById('toval').value);">To</a>
+		</p>
+		<hr></hr>
+		<div style="float:right;">Visibility: <b id="status"></b></div>
+		<p>
+			<a href="javascript:;" onclick="getFlow().hide();">Hide</a> - <a href="javascript:;" onclick="getFlow().show();">Show</a>
+		</p>
+	</div>
+
+</body>
+</html>
